@@ -8,12 +8,11 @@ class BaseModel {
     }
     public function create($dataCreate){
         try {
-            $key = array_keys($dataCreate);
-            $columns = implode(", ", $key);
-
+            $keys = array_keys($dataCreate);
+            $columns = implode(", ", $keys);
             $valueColumn = implode(", ", array_map(function ($k){
                 return ":$k";
-            }, $key));
+            }, $keys));
             $sql = "INSERT INTO $this->table ($columns) VALUES ($valueColumn)";
             $statement = $this->pdo->prepare($sql);
             $statement->execute($dataCreate);
