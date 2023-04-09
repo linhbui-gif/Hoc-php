@@ -14,12 +14,12 @@ $productModel = new Product();
 //]);
 
 $data =  $productModel
-    ->select('name,description')
+    ->select('products.id,name,description,name_tag')
     ->join('product_tags',  'products.id = product_tags.product_id')
 //    ->groupBy('name')
-    ->orderBy('name asc')
+//    ->orderBy('name asc')
 //    ->having('name')
-    ->where('id',27)
+//    ->where('id',27)
     ->get();
 echo "<pre>";
 print_r($data);
