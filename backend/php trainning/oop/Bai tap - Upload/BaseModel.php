@@ -2,9 +2,8 @@
 class BaseModel {
     private $table;
     private $pdo;
-    public function __construct($table){
-       $this->table = $table;
-       $this->connectDatabase();
+    public function __construct(){
+       $this->pdo = $this->connectDatabase();
     }
     public function create($dataCreate){
         try {
@@ -35,8 +34,7 @@ class BaseModel {
         $charset = 'utf8mb4';
         $dsn = "mysql:host=$host;dbname=$db;charset=$charset;port=$port";
         try {
-            $this->pdo = new \PDO($dsn, $user, $pass);
-            var_dump("Connect success");
+            return new \PDO($dsn, $user, $pass);
         } catch (\PDOException $e) {
             throw new \PDOException($e->getMessage(), (int)$e->getCode());
         }
