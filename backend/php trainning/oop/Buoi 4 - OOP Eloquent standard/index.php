@@ -19,7 +19,7 @@ $data =  $productModel
 //    ->groupBy('name')
 //    ->orderBy('name asc')
 //    ->having('name')
-//    ->where('id',27)
+//    ->where('products_id',27)
     ->get();
 echo "<pre>";
 print_r($data);

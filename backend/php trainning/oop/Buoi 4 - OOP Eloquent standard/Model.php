@@ -234,4 +234,8 @@ class Model {
             throw new \PDOException($e->getMessage(), (int)$e->getCode());
         }
     }
+    /**
+     * Build First laays 1 ban ghi
+     * Build find tìm theo ID
+     */
 }
