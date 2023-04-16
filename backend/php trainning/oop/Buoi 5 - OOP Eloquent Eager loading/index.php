@@ -1,6 +1,7 @@
 <?php
 require __DIR__ . '/Product.php';
 $productModel = new Product();
+//$productModel->comments;
 //$productModel->insert([
 //    "name" => "san pham 1",
 //    "description" => "mo ta 1",
@@ -26,10 +27,11 @@ $productModel = new Product();
 
 $data = $productModel
     ->select('name')
-    ->whereArray([
-       ['name', '=','san'],
-    ])
-    ->get();
+//    ->whereArray([
+//       ['name', '=','san'],
+//    ])
+    ->with('comments');
+//    ->get();
 echo "<pre>";
 print_r($data);
 //Cach 1
@@ -39,3 +41,10 @@ print_r($data);
 //cach 2
 //$productModel->setName('product 122222');
 //$productModel->save($productModel);
+
+/**
+ * 3 bước để xử lý tối ưu query data ==> eager loading
+ * 1, Query bảng chính
+ * 2, Dùng loop data để đóng gói vào 1 mảng
+ * 3, Chuẩn hóa data
+ */

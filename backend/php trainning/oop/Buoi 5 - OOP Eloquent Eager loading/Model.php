@@ -14,9 +14,12 @@ class Model {
    protected $attribuite = [];
    protected $fillable;
    //set chạy khi 1 thuộc tính troing modal không tồn tại ==> magic setter ==> Cach 1
-//   public function __set($name,$value){
-//      $this->attribuite[$name] = $value;
-//   }
+   public function __set($name,$value){
+      $this->attribuite[$name] = $value;
+   }
+    public function __get($name){
+        $this->$name();
+    }
     public function __construct(){
         $this->pdo = $this->connectDatabase();
     }
@@ -227,17 +230,21 @@ class Model {
       return $this;
    }
    public function whereArray($conditionArray){
+
         //xu ly cho mang 2 chieu
         if (is_array($conditionArray) && count($conditionArray) === 1){
             $conditionArray = [$conditionArray];
         }
         foreach ($conditionArray as $k => $itemArr){
-            list($column,$operator,$value) = $itemArr;
-            $this->where[]= [
-                'column' => $column,
-                'operator' => $operator,
-                'value' => $value,
-            ];
+
+            if (!empty($itemArr)) {
+                list($column,$operator,$value) = $itemArr;
+                $this->where[]= [
+                    'column' => $column,
+                    'operator' => $operator,
+                    'value' => $value,
+                ];
+            }
         }
         return $this;
    }
@@ -262,14 +269,58 @@ class Model {
     public function save($model)
     {
         //Cach 1 dung magic setter
-        //$this->insert($this->attribuite);
+        $this->insert($this->attribuite);
         //Cach 2 dung getter setter binh thuong
-        $dataColumn = $this->fillable;
-       foreach($dataColumn as $k => $column){
-           $getter = 'get'. ucfirst($column);
-           $value = $model->$getter();
-           $this->attribuite[$column] = $value;
-       }
-       $this->insert($this->attribuite);
+//        $dataColumn = $this->fillable;
+//       foreach($dataColumn as $k => $column){
+//           $getter = 'get'. ucfirst($column);
+//           $value = $model->$getter();
+//           $this->attribuite[$column] = $value;
+//       }
+//       $this->insert($this->attribuite);
+    }
+    public function hasMany($className, $foreignKey){
+       $classInstance = new $className();
+//       $sql = "SELECT * FROM products WHERE category_id IN ($arrCategoryID)";
+        var_dump($classInstance->table);
+    }
+    public function eagerLoading(){
+        // 3 category -> N -> N + 1 -> 2
+        $sqlCategory = "SELECT * FROM category";
+
+        $stmt = $this->pdo->prepare($sqlCategory);
+        $stmt->execute();
+        // thuc thi sql
+        $categories = $stmt->fetchAll(PDO::FETCH_OBJ);
+        // lay id chinh de query sang bang phu
+        $idCategorys = [];
+        foreach($categories as $categoryItem) {
+            $idCategorys[] = $categoryItem->id;
+        }
+        $idCategorysIn = implode(', ', $idCategorys);
+        // query lay data bang phu
+        $sqlProducts = "SELECT * FROM products WHERE category_id IN ($idCategorysIn)";
+        $stmt = $this->pdo->prepare($sqlProducts);
+        $stmt->execute();
+        // thuc thi sql
+        $products = $stmt->fetchAll(PDO::FETCH_OBJ);
+
+        // chuan hoa du lieu
+        $productGroup = [];
+        foreach($products as $productItem) {
+            $key = $productItem->category_id;
+            $productGroup[$key][] = $productItem;
+
+        }
+        foreach($categories as $categoryItem) {
+            $categoryItem->product = $productGroup[$categoryItem->id];
+        }
+
+        echo "<pre>";
+        print_r($categories);
+        echo "<hr/>";
+    }
+    public function with($modelRelation){
+          return $this->$modelRelation();
     }
 }
