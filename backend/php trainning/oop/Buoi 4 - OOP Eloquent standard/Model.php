@@ -173,7 +173,7 @@ class Model {
     public function select($select){
         if ($select){
             $this->select = $select;
-        } else{
+        } else {
             $this->select = "*";
         }
         return $this;
@@ -196,7 +196,7 @@ class Model {
         }
         return $this;
     }
-   public function where(){
+    public function where(){
         $numArg = func_num_args();
         $args = func_get_args();
         if($numArg == 2){
