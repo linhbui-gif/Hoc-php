@@ -19,6 +19,6 @@ class Product extends Model {
 //        return $this->name;
 //    }
     public function comments(){
-        return $this->hasMany(Comment::class,'product_id');
+        return $this->hasMany(Brand::class,'product_id');
     }
 }
