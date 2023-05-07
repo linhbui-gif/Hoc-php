@@ -321,6 +321,7 @@ class Model {
         echo "<hr/>";
     }
     public function with($modelRelation){
+          //Làm đơn lẻ 1 relation với with
           return $this->$modelRelation();
     }
 }
