@@ -7,7 +7,7 @@ tabLinks.forEach(function(el) {
 
 
 function openTabs(el) {
-   var btn = el.currentTarget; //laf tab links
+   var btn = el.currentTarget;
    var tab = btn.dataset.tab;
  
    tabContent.forEach(function(el) {
