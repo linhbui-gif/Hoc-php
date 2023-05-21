@@ -15,7 +15,6 @@ class HomeController
         $data = [
             'products' => $products->get()
         ];
-
         View::render('home/index.php', $data);
     }
 
