@@ -1,0 +1,33 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "data 1",
+      "author": "typicode"
+    },
+    {
+      "title": "ád",
+      "id": 2
+    },
+    {
+      "title": "zxd",
+      "id": 3
+    },
+    {
+      "title": "sda",
+      "id": 4
+    },
+    {
+      "title": "",
+      "id": 5
+    },
+    {
+      "title": "sad",
+      "id": 6
+    },
+    {
+      "title": "1232232323322",
+      "id": 7
+    }
+  ]
+}
