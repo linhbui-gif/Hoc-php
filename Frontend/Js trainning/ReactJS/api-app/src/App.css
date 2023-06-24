@@ -118,3 +118,21 @@ input {
 .addBtn:hover {
   background-color: #bbb;
 }
+.container {
+  width: 1200px;
+  margin: 0 auto;
+  margin-top: 40px;
+}
+
+.update {
+  position: absolute;
+  right: 50px;
+  top: 0;
+  padding: 12px 16px 12px 16px;
+
+}
+
+.update:hover {
+  background-color: #36f4c5;
+  color: white;
+}
