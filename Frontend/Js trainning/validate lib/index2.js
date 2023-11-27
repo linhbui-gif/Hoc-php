@@ -46,13 +46,21 @@ function Validate(options) {
                 message: ''
             }
         },
-        min: function(fieldName, minLength){
+        min: function(fieldName, minLength, elementValidate){
+            const messageKey = fieldName + "_" + elementValidate
             const inputSelector = document.querySelector('#' + fieldName);
             const valueInput = inputSelector.value;
+            let message;
+            console.log('messageAll', messageAll);
+            if(messageAll[messageKey]){
+                message = messageAll[messageKey]
+            } else{
+                message = fieldName + ' phải lớn hơn ' + minLength + ' charactor '
+            }
             if(valueInput.length < minLength){
                 return {
                     is_valid: false,
-                    message: fieldName + ' phải lớn hơn ' + minLength + ' charactor '
+                    message: message
                 }
             }
             return {
@@ -60,14 +68,24 @@ function Validate(options) {
                 message: ''
             }
         },
-        // max: function(fieldName, maxLength){
-        //     const inputSelector = document.querySelector('#' + fieldName);
-        //     const valueInput = inputSelector.value;
-        //     if(valueInput.length > maxLength){
-        //         return fieldName + ' phải nhỏ hơn ' + maxLength + ' charactor '
-        //     }
-        //     return ''
-        // },
+        max: function(fieldName, maxLength, elementValidate){
+            const messageKey = fieldName + "_" + elementValidate
+            const inputSelector = document.querySelector('#' + fieldName);
+            const valueInput = inputSelector.value;
+            let message;
+            if(messageAll[messageKey]){
+                message = messageAll[messageKey]
+            } else{
+                message = fieldName + ' phải nhỏ hơn ' + minLength + ' charactor '
+            }
+            if(valueInput.length > maxLength){
+                return {
+                    is_valid: false,
+                    message: message
+                }
+            }
+            return ''
+        },
         // between: function(fieldName, between){
         //     const [min, max] = between.split(",")
         //     const inputSelector = document.querySelector('#' + fieldName);
@@ -86,7 +104,6 @@ function Validate(options) {
             const element = document.querySelector("#" + fieldName)
             const errors = messages[fieldName];
             let message;
-          
             for(let i = 0; i <  errors.length; i++){
                 if(!errors[i].is_valid){
                     message = errors[i].message;
@@ -110,17 +127,21 @@ function Validate(options) {
 
     function handleSubmitForm() {
         // validate form
+        
         // 1. loop qua cac phan tu validate
         for (const fieldName in rules) {
            const validateHandleArray = rules[fieldName];
+          
            // loop validate array
             validateHandleArray.forEach(
                 function(elementValidate) {
                     // chạy hàm validate
                     const explodeData = elementValidate.split(":");
+                   
                     elementValidate = explodeData[0]
+                    // console.log('validateRule', validateRule);
+                    // console.log('validateRule[elementValidate]', validateRule[elementValidate]);
                     const messageValidate = validateRule[elementValidate](fieldName, explodeData[1], elementValidate);
-                    
                     if(!messages[fieldName]){
                         messages[fieldName] = [messageValidate];
                     } else{
@@ -149,7 +170,7 @@ let ruleValidateInput = {
         name: [
             'required',
             'min:4',
-            // 'max:12',
+            'max:12',
         ],
         email: [
             'required',
@@ -161,7 +182,9 @@ let ruleValidateInput = {
         ]
     },
     messages: {
-        name_required: 'Bắt buộc nhập tên'
+        name_required: 'Bắt buộc nhập tên',
+        name_max: 'Tên phải nhỏ hơn 12 kí tự',
+        name_min: 'Tên phải lớn hơn 12 kí tự',
     }
 }
 
